@@ -1,0 +1,12 @@
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\bin\Debug\EDSDKLib.dll
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\bin\Debug\EDSDKLib.pdb
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\Debug\EDSDKLib.csproj.AssemblyReference.cache
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\Debug\EDSDKLib.csproj.CoreCompileInputs.cache
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\Debug\EDSDKLib.dll
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\Debug\EDSDKLib.pdb
+C:\Users\habib.temure\source\repos\PhotoTakerConsole\EDSDKLib\bin\Debug\EDSDKLib.dll
+C:\Users\habib.temure\source\repos\PhotoTakerConsole\EDSDKLib\bin\Debug\EDSDKLib.pdb
+C:\Users\habib.temure\source\repos\PhotoTakerConsole\EDSDKLib\obj\Debug\EDSDKLib.csproj.AssemblyReference.cache
+C:\Users\habib.temure\source\repos\PhotoTakerConsole\EDSDKLib\obj\Debug\EDSDKLib.csproj.CoreCompileInputs.cache
+C:\Users\habib.temure\source\repos\PhotoTakerConsole\EDSDKLib\obj\Debug\EDSDKLib.dll
+C:\Users\habib.temure\source\repos\PhotoTakerConsole\EDSDKLib\obj\Debug\EDSDKLib.pdb

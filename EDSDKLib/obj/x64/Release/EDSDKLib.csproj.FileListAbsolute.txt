@@ -1,0 +1,7 @@
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\bin\x64\Release\EDSDKLib.dll
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\bin\x64\Release\EDSDKLib.pdb
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\bin\x64\Release\EDSDKLib.xml
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\x64\Release\EDSDKLib.csproj.AssemblyReference.cache
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\x64\Release\EDSDKLib.csproj.CoreCompileInputs.cache
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\x64\Release\EDSDKLib.dll
+C:\Users\habib.temure\Downloads\EDSDKLib-1.1.2\EDSDKLib\obj\x64\Release\EDSDKLib.pdb
