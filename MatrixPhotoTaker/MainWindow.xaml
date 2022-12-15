@@ -7,6 +7,51 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
     <Grid>
+        <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush x:Name="MatrixImage" Stretch="Fill"/>
+            </Grid.Background>
+        </Grid>
 
+        <StackPanel Grid.Column="1">
+            <Button  Content="Подключиться к камере" Click="OpenSession_Click" Width="170" Height="50" Margin="0 20"/>
+            <Button x:Name="TakePhoto" Content="Сделать фото" Width="100" Height="100" Click="TakePhoto_Click" VerticalAlignment ="Center" HorizontalAlignment="Center" Margin="0 20" IsEnabled="False"/>
+            <TextBlock Text="Серийный номер матрицы"  HorizontalAlignment="Center"/>
+            <TextBlock x:Name="SerialNumberText"/>
+            <TextBox x:Name="SerialNumberBox"/>
+            <Button x:Name="ChangeSerialNumber" Content="Ввести" HorizontalAlignment="Center" Click="ChangeSerialNumber_Click"/>
+            <Button x:Name="SendPhoto" Content="Отправить фото" HorizontalAlignment="Center" Click="SendPhoto_Click" Margin="0 20"/>
+            <TextBlock Text="Настройки" Margin="10 10"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Av:" Margin="5 10"/>
+                    <TextBlock Text="ISO" Margin="5 5"/>
+                    <TextBlock Text="Tv" Margin="5 5" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock x:Name="AvSettings" Margin="5 10"/>
+                    <TextBlock x:Name="ISOSettings" Margin="5 5"/>
+                    <TextBlock x:Name="TvSettings" Margin="5 5" />
+                </StackPanel>
+            </Grid>
+
+            <Button x:Name="ChangeSettings" Content="Изменить настройки"  Click="ChangeSettings_Click"/>
+
+            <ComboBox x:Name="AvCoBox" Margin="0 5"  Width="100"  IsEnabled="False"/>
+            <ComboBox x:Name="TvCoBox" Margin="0 5"  Width="100"  IsEnabled="False"/>
+            <ComboBox x:Name="ISOCoBox" Margin="0 5"  Width="100"  IsEnabled="False"/>
+
+            <Button x:Name="SaveChanges" Content="Сохранить измененения" Click="SaveChanges_Click"/>
+        </StackPanel>
+        
+        
     </Grid>
 </Window>

@@ -150,7 +150,7 @@ namespace EOSDigital.API
                     runAction = action;
                     NotifyThread();
                     WaitForThread();
-                    if (runException != null)  throw new ExecutionException(runException.Message, runException);
+                    if (runException != null) throw new ExecutionException(runException.Message, runException);
                 }
             }
         }
