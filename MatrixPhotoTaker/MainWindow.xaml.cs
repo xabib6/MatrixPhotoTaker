@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using EOSDigital.API;
@@ -96,6 +97,7 @@ namespace MatrixPhotoTaker
 
         private void ChangeSerialNumber_Click(object sender, RoutedEventArgs e)
         {
+            SendPhoto.IsEnabled = false;
             if (SerialNumberBox.Text == string.Empty)
             {
                 MessageBox.Show("Серийный номер не может быть пустым");
@@ -111,7 +113,6 @@ namespace MatrixPhotoTaker
             }
 
             MatrixImage.ImageSource = null;
-            SendPhoto.IsEnabled = false;
             if (_isSessionOpen == true)
             {
                 TakePhoto.IsEnabled = true;
@@ -192,6 +193,9 @@ namespace MatrixPhotoTaker
             MainCamera.SetCapacity(4096, int.MaxValue);
         }
 
-
+        private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            
+        }
     }
 }

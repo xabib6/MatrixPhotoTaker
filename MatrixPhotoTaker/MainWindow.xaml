@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MatrixPhotoTaker"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
-    <Grid>
+    <Grid Keyboard.KeyDown="Grid_KeyDown">
         <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="6*"/>
                 <ColumnDefinition Width="*"/>
@@ -24,9 +24,10 @@
             <TextBlock x:Name="SerialNumberText"/>
             <TextBox x:Name="SerialNumberBox"/>
             <Button x:Name="ChangeSerialNumber" Content="Ввести" HorizontalAlignment="Center" Click="ChangeSerialNumber_Click"/>
-            <Button x:Name="SendPhoto" Content="Отправить фото" HorizontalAlignment="Center" Click="SendPhoto_Click" Margin="0 20"/>
+            <Button x:Name="SendPhoto" Content="Отправить фото" HorizontalAlignment="Center" Click="SendPhoto_Click" Margin="0 20" IsEnabled="False"/>
             <TextBlock Text="Настройки" Margin="10 10"/>
             <Grid>
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
