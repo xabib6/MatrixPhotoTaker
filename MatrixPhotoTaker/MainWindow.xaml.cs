@@ -26,11 +26,8 @@ namespace MatrixPhotoTaker
         public MainWindow()
         {
             InitializeComponent();
-            DBConnect dBConnect = new DBConnect("postgres", "admin", "192.168.222.104");
-            dBConnect.Test();
             Start();
-            
-
+            DBConnect.Init();
         }
 
         static void Start()
@@ -44,51 +41,24 @@ namespace MatrixPhotoTaker
             }
         }
 
-        private static void MainCamera_DownloadReady(Camera sender, DownloadInfo Info)
+        private void OpenSession_Click(object sender, RoutedEventArgs e)
         {
-            DeleteTempPhoto();
-            Info.FileName = SerialNumber + ".png";
-            var ImageSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto");
-            sender.DownloadFile(Info, ImageSaveDirectory);
-            MainCamera.SetCapacity(4096, int.MaxValue);
-        }
-
-        private static void DeleteTempPhoto()
-        {
-            if (File.Exists(_fileName) == true)
+            if (MainCamera == null)
             {
-                File.Delete(_fileName);
+                MainCamera = APIHandler.GetCameraList().FirstOrDefault();
             }
-        }
-
-
-
-
-        private void ChangePreviewPhoto()
-        {  
-            if (File.Exists(_fileName))
+            if (MainCamera == null)
             {
-                MatrixImage.ImageSource = GetCopy();
+                MessageBox.Show("Камера не подключена");
+                return;
             }
+            imageBrush = MatrixImage;
+            if (SerialNumber != null)
+            {
+                TakePhoto.IsEnabled = true;
+            }
+            OpenSession();
         }
-
-
-        private System.Windows.Media.ImageSource GetCopy()
-        {
-            Thread.Sleep(1000);
-            byte[] imgBytes = File.ReadAllBytes(_fileName);
-            BitmapImage biImg = new BitmapImage();
-            MemoryStream ms = new MemoryStream(imgBytes);
-            biImg.BeginInit();
-            biImg.StreamSource = ms;
-            biImg.EndInit();
-
-            System.Windows.Media.ImageSource imgSrc = biImg as System.Windows.Media.ImageSource;
-            
-            return imgSrc;
-        }
-        
-
 
         private void OpenSession()
         {
@@ -117,13 +87,7 @@ namespace MatrixPhotoTaker
 
         private void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
-            if (SerialNumberText.Text == null)
-            {
-                MessageBox.Show("Введите серийный номер матрицы");
-                return;
-            }
-            
-                MainCamera.TakePhotoAsync();
+            MainCamera.TakePhotoAsync();
             SendPhoto.IsEnabled = true;
             imageBrush.ImageSource= null;
             Thread.Sleep(2000);
@@ -132,17 +96,30 @@ namespace MatrixPhotoTaker
 
         private void ChangeSerialNumber_Click(object sender, RoutedEventArgs e)
         {
+            if (SerialNumberBox.Text == string.Empty)
+            {
+                MessageBox.Show("Серийный номер не может быть пустым");
+                return;
+            }
+
+            DBConnect dbConnection = new DBConnect("postgres", "admin", "192.168.222.104");
+            if (dbConnection.SerialNumberExsist(SerialNumberBox.Text) == false)
+            {
+                MessageBox.Show("Матрица с таким серийным номером не существует");
+                SerialNumberBox.Text = string.Empty;
+                return;
+            }
+
             MatrixImage.ImageSource = null;
-            DeleteTempPhoto();
             SendPhoto.IsEnabled = false;
             if (_isSessionOpen == true)
             {
                 TakePhoto.IsEnabled = true;
             }
 
-
             SerialNumberText.Text = SerialNumberBox.Text;
             SerialNumber = SerialNumberBox.Text;
+            DeleteTempPhoto();
             _fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\") + SerialNumber + ".png";
             SerialNumberBox.Text = string.Empty;
         }
@@ -154,14 +131,7 @@ namespace MatrixPhotoTaker
             DBConnect dbConnection=  new DBConnect( "postgres", "admin","192.168.222.104");
             dbConnection.AddReport(FilePathOnServer, SerialNumber);
             SendPhoto.IsEnabled = false;
-            //DbConnect
         }    
-
-
-        
-
-
-
 
         private void ChangeSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -181,16 +151,47 @@ namespace MatrixPhotoTaker
             TvCoBox.IsEnabled = false;            
         }
 
-        private void OpenSession_Click(object sender, RoutedEventArgs e)
+
+        private System.Windows.Media.ImageSource GetCopy()
         {
-            imageBrush = MatrixImage;
-            if (SerialNumber != null)
-            {
-                TakePhoto.IsEnabled = true;
-            }
-            OpenSession();
+            Thread.Sleep(1000);
+            byte[] imgBytes = File.ReadAllBytes(_fileName);
+            BitmapImage biImg = new BitmapImage();
+            MemoryStream ms = new MemoryStream(imgBytes);
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
+
+            System.Windows.Media.ImageSource imgSrc = biImg as System.Windows.Media.ImageSource;
+
+            return imgSrc;
         }
 
-        
+        private static void DeleteTempPhoto()
+        {
+            if (File.Exists(_fileName) == true)
+            {
+                File.Delete(_fileName);
+            }
+        }
+
+        private void ChangePreviewPhoto()
+        {
+            if (File.Exists(_fileName))
+            {
+                MatrixImage.ImageSource = GetCopy();
+            }
+        }
+
+        private static void MainCamera_DownloadReady(Camera sender, DownloadInfo Info)
+        {
+            DeleteTempPhoto();
+            Info.FileName = SerialNumber + ".png";
+            var ImageSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto");
+            sender.DownloadFile(Info, ImageSaveDirectory);
+            MainCamera.SetCapacity(4096, int.MaxValue);
+        }
+
+
     }
 }

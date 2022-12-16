@@ -1,12 +1,18 @@
 ﻿using Antilatency.Factory.DatabaseAccessor;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace MatrixPhotoTaker
 {
     internal class DBConnect
     {
+        static List<Device> MatrixList;
+
         private string _username;
         private string _password;
         private string _IP;
@@ -17,6 +23,17 @@ namespace MatrixPhotoTaker
             _IP= IP;
         }
 
+        public static void Init()
+        {
+            DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool("postgres", "admin", "192.168.222.104");
+            MatrixList = databaseAccessTool.Devices.Where(d => d.DeviceType == (int)DeviceTypeNames.MatrixM240HW01_1_8).ToList();
+        }
+
+        public bool SerialNumberExsist(string serialNumber)
+        {
+            var Matrix = MatrixList.FirstOrDefault(d => d.SerialNumber == serialNumber);
+            return Matrix != null;
+        }
 
         public void AddReport(string FilePath, string serialNumber)
         {
@@ -27,22 +44,18 @@ namespace MatrixPhotoTaker
             DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(_username, _password, _IP);
             var data = new JObject();
             data["url"] = FilePath;
-            databaseAccessTool.SendReport(serialNumber, DeviceTypeNames.MatrixM240HW01_1_8, ReportTypes.Test, data.ToString(), "photo");            
-            databaseAccessTool.SaveChanges();            
-        }
-
-       public void Test()
-        {
-            MessageBox.Show("Enter");
-            DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(_username, _password, _IP);
-
-            var urlReport = databaseAccessTool.DatabaseReports;
-            var Reports = urlReport.Where(d => d.ReportType == (int)ReportTypes.Test && d.ReportedDevice == 1000500405).ToList();
-
-            foreach (var report in Reports)
+            try
             {
-                MessageBox.Show(report.ReportData);
+                databaseAccessTool.SendReport(serialNumber, DeviceTypeNames.MatrixM240HW01_1_8, ReportTypes.Test, data.ToString(), "photo");
+                databaseAccessTool.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);                
+            }
+                       
         }
+
+       
     }
 }
