@@ -27,7 +27,7 @@ namespace MatrixPhotoTaker
         private static ImageBrush imageBrush;
         private static float _delay;
         private static string _PCID;
-        public static string[] DBConnectionData = { "tester", "user", "192.168.222.58" };
+        public static string[] DBConnectionData = { "postgres", "admin", "192.168.222.104" };
 
         public MainWindow()
         {

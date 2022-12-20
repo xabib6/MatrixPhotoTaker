@@ -52,6 +52,10 @@
               "target": "Package",
               "version": "[42.1.0, )"
             },
+            "Microsoft.Windows.Compatibility": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "System.Drawing.Primitives": {
               "target": "Package",
               "version": "[4.3.0, )"
