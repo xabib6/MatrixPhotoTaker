@@ -28,11 +28,35 @@ namespace MatrixPhotoTaker
             DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(MainWindow.DBConnectionData[0], MainWindow.DBConnectionData[1], MainWindow.DBConnectionData[2]);
             MatrixList = databaseAccessTool.Devices.Where(d => d.DeviceType == (int)DeviceTypeNames.MatrixM240HW01_1_8).ToList();
         }
-        public static string GetLast()
+        public static string GetLast(string PCID)
         {
             DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(MainWindow.DBConnectionData[0], MainWindow.DBConnectionData[1], MainWindow.DBConnectionData[2]);
-            var reports = databaseAccessTool.DatabaseReports.Where(d => d.Name == "matrixOnly" && d.ReportedDevice != 4210).ToList().LastOrDefault();
-            var matrix = databaseAccessTool.Devices.FirstOrDefault(d => d.Id == reports.ReportedDevice).SerialNumber;
+            var reports = databaseAccessTool.DatabaseReports.Where(d => d.Name == "matrixOnly").ToList();
+            reports.Reverse();
+            DatabaseReport lastReport = null;
+            foreach (var report in reports)
+            {
+                var data = JObject.Parse(report.ReportData);
+                if (data["PCID"] != null)
+                {
+                    var pcid = data["PCID"].ToString();
+                    if (pcid == PCID)
+                    {
+                        lastReport = report;
+                        break;
+                    }
+                }
+
+                else
+                {
+                    MessageBox.Show("Для данного пк не найдено отчёта");
+                    return null;
+                }
+
+            }
+
+
+            var matrix = databaseAccessTool.Devices.First(d => d.Id == lastReport.ReportedDevice).SerialNumber;
 
             return matrix;
         }

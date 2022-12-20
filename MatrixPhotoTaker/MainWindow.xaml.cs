@@ -26,6 +26,7 @@ namespace MatrixPhotoTaker
         private static bool _isSessionOpen;
         private static ImageBrush imageBrush;
         private static float _delay;
+        private static string _PCID;
         public static string[] DBConnectionData = { "tester", "user", "192.168.222.58" };
 
         public MainWindow()
@@ -33,7 +34,8 @@ namespace MatrixPhotoTaker
             InitializeComponent();
             Start();
             DBConnect.Init();
-            _delay = 0;
+            _delay = 5f;
+            _PCID = PCID.GetId();
         }
 
         static void Start()
@@ -244,7 +246,7 @@ namespace MatrixPhotoTaker
         private void GetLastMatrix_Click(object sender, RoutedEventArgs e)
         {
             DBConnect.Init();
-            SerialNumberBox.Text = DBConnect.GetLast();
+            SerialNumberBox.Text = DBConnect.GetLast(_PCID);
             ChangeSerialNumber_Click(sender, e);
         }
     }

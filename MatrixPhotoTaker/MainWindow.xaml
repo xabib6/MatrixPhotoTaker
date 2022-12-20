@@ -27,10 +27,9 @@
             <TextBlock x:Name="SerialNumberText"/>
             <TextBox x:Name="SerialNumberBox"/>
             <Button x:Name="ChangeSerialNumber" Content="Ввести" HorizontalAlignment="Center" Click="ChangeSerialNumber_Click"/>
-            <Button x:Name="SendPhoto" Content="Отправить фото" HorizontalAlignment="Center" Click="SendPhoto_Click" Margin="0 20" IsEnabled="False"/>
-            <TextBlock Text="Настройки" Margin="10 10"/>
+            <Button x:Name="SendPhoto" Content="Отправить фото" HorizontalAlignment="Center" Click="SendPhoto_Click" Margin="0 20" Height="40" Width="120" IsEnabled="False"/>
+            <TextBlock Text="Настройки" Margin="10 40 0 0"/>
             <Grid>
-
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
