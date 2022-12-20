@@ -18,15 +18,23 @@ namespace MatrixPhotoTaker
         private string _IP;
         public DBConnect(string username, string password, string IP)
         {
-            _username= username;
-            _password= password;
-            _IP= IP;
+            _username = username;
+            _password = password;
+            _IP = IP;
         }
 
         public static void Init()
         {
-            DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool("postgres", "admin", "192.168.222.104");
+            DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(MainWindow.DBConnectionData[0], MainWindow.DBConnectionData[1], MainWindow.DBConnectionData[2]);
             MatrixList = databaseAccessTool.Devices.Where(d => d.DeviceType == (int)DeviceTypeNames.MatrixM240HW01_1_8).ToList();
+        }
+        public static string GetLast()
+        {
+            DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(MainWindow.DBConnectionData[0], MainWindow.DBConnectionData[1], MainWindow.DBConnectionData[2]);
+            var reports = databaseAccessTool.DatabaseReports.Where(d => d.Name == "matrixOnly" && d.ReportedDevice != 4210).ToList().LastOrDefault();
+            var matrix = databaseAccessTool.Devices.FirstOrDefault(d => d.Id == reports.ReportedDevice).SerialNumber;
+
+            return matrix;
         }
 
         public bool SerialNumberExsist(string serialNumber)
@@ -51,11 +59,11 @@ namespace MatrixPhotoTaker
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);                
+                MessageBox.Show(ex.Message);
             }
-                       
+
         }
 
-       
+
     }
 }

@@ -17,7 +17,7 @@ namespace MatrixPhotoTaker
     /// </summary>
     public partial class MainWindow : Window
     {
-              
+
         private static ManualResetEvent WaitEvent = new ManualResetEvent(false);
         private static CanonAPI APIHandler;
         private static Camera MainCamera;
@@ -26,6 +26,7 @@ namespace MatrixPhotoTaker
         private static bool _isSessionOpen;
         private static ImageBrush imageBrush;
         private static float _delay;
+        public static string[] DBConnectionData = { "tester", "user", "192.168.222.58" };
 
         public MainWindow()
         {
@@ -36,10 +37,10 @@ namespace MatrixPhotoTaker
         }
 
         static void Start()
-        {            
+        {
             APIHandler = new CanonAPI();
             MainCamera = APIHandler.GetCameraList().FirstOrDefault();
-            if (MainCamera == null )
+            if (MainCamera == null)
             {
                 MessageBox.Show("Камера не подключена");
                 return;
@@ -102,12 +103,12 @@ namespace MatrixPhotoTaker
             {
                 TakingPhotoDelay.Value++;
                 await Task.Delay((int)(_delay * 18));
-            }            
+            }
 
             MainCamera.TakePhotoAsync();
-            TakingPhotoDelay.Value= 0;
+            TakingPhotoDelay.Value = 0;
             SendPhoto.IsEnabled = true;
-            imageBrush.ImageSource= null;
+            imageBrush.ImageSource = null;
             Thread.Sleep(2000);
             ChangePreviewPhoto();
         }
@@ -121,7 +122,7 @@ namespace MatrixPhotoTaker
                 return;
             }
 
-            DBConnect dbConnection = new DBConnect("postgres", "admin", "192.168.222.104");
+            DBConnect dbConnection = new DBConnect(DBConnectionData[0], DBConnectionData[1], DBConnectionData[2]);
             if (dbConnection.SerialNumberExsist(SerialNumberBox.Text) == false)
             {
                 MessageBox.Show("Матрица с таким серийным номером не существует");
@@ -146,10 +147,10 @@ namespace MatrixPhotoTaker
         {
             ServerConnection connection = new ServerConnection("192.168.222.250", "admin", "admin", 22);
             string FilePathOnServer = connection.SendImageToServer(_fileName, SerialNumber);
-            DBConnect dbConnection=  new DBConnect( "postgres", "admin","192.168.222.104");
+            DBConnect dbConnection = new DBConnect(DBConnectionData[0], DBConnectionData[1], DBConnectionData[2]);
             dbConnection.AddReport(FilePathOnServer, SerialNumber);
             SendPhoto.IsEnabled = false;
-        }    
+        }
 
         private void ChangeSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -163,10 +164,10 @@ namespace MatrixPhotoTaker
             MainCamera.SetSetting(PropertyID.Av, AvValues.GetValue((string)AvCoBox.SelectedItem).IntValue);
             MainCamera.SetSetting(PropertyID.Tv, TvValues.GetValue((string)TvCoBox.SelectedItem).IntValue);
             MainCamera.SetSetting(PropertyID.ISO, ISOValues.GetValue((string)ISOCoBox.SelectedItem).IntValue);
-            
+
             AvCoBox.IsEnabled = false;
             ISOCoBox.IsEnabled = false;
-            TvCoBox.IsEnabled = false;            
+            TvCoBox.IsEnabled = false;
         }
 
 
@@ -212,7 +213,7 @@ namespace MatrixPhotoTaker
 
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-           if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 if (SerialNumberBox.IsFocused == true)
                 {
@@ -226,10 +227,10 @@ namespace MatrixPhotoTaker
         }
 
         private void ChangeDelayButton_Click(object sender, RoutedEventArgs e)
-        {    
+        {
 
             if (float.TryParse(ChangeDelayBox.Text, System.Globalization.NumberStyles.Currency, null, out _delay) == true)
-            {                
+            {
                 CurrentDelay.Text = ChangeDelayBox.Text;
                 ChangeDelayBox.Text = string.Empty;
             }
@@ -238,6 +239,13 @@ namespace MatrixPhotoTaker
                 MessageBox.Show("Некорректный ввод задержки");
                 ChangeDelayBox.Text = string.Empty;
             }
+        }
+
+        private void GetLastMatrix_Click(object sender, RoutedEventArgs e)
+        {
+            DBConnect.Init();
+            SerialNumberBox.Text = DBConnect.GetLast();
+            ChangeSerialNumber_Click(sender, e);
         }
     }
 }
