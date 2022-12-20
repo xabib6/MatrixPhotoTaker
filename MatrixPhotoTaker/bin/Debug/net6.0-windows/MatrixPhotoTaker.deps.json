@@ -9,7 +9,6 @@
       "MatrixPhotoTaker/1.0.0": {
         "dependencies": {
           "AntilatencyFactoryDatabaseAccessor": "2.0.4",
-          "EDSDK": "1.0.0",
           "EDSDKLib": "1.0.0",
           "FluentFTP": "42.1.0",
           "System.Drawing.Primitives": "4.3.0"

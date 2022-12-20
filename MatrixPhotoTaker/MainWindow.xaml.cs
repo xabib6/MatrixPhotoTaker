@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -17,18 +18,21 @@ namespace MatrixPhotoTaker
     public partial class MainWindow : Window
     {
               
-        static ManualResetEvent WaitEvent = new ManualResetEvent(false);
-        static CanonAPI APIHandler;
-        static Camera MainCamera;
-        static string SerialNumber;
-        static string _fileName;
-        static bool _isSessionOpen;
-        static ImageBrush imageBrush;
+        private static ManualResetEvent WaitEvent = new ManualResetEvent(false);
+        private static CanonAPI APIHandler;
+        private static Camera MainCamera;
+        private static string SerialNumber;
+        private static string _fileName;
+        private static bool _isSessionOpen;
+        private static ImageBrush imageBrush;
+        private static float _delay;
+
         public MainWindow()
         {
             InitializeComponent();
             Start();
             DBConnect.Init();
+            _delay = 0;
         }
 
         static void Start()
@@ -39,6 +43,11 @@ namespace MatrixPhotoTaker
             {
                 MessageBox.Show("Камера не подключена");
                 return;
+            }
+
+            if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\")))
+            {
+                File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\"));
             }
         }
 
@@ -86,9 +95,17 @@ namespace MatrixPhotoTaker
         }
 
 
-        private void TakePhoto_Click(object sender, RoutedEventArgs e)
+        private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
+
+            for (int i = 0; i < 50; i++)
+            {
+                TakingPhotoDelay.Value++;
+                await Task.Delay((int)(_delay * 18));
+            }            
+
             MainCamera.TakePhotoAsync();
+            TakingPhotoDelay.Value= 0;
             SendPhoto.IsEnabled = true;
             imageBrush.ImageSource= null;
             Thread.Sleep(2000);
@@ -195,7 +212,32 @@ namespace MatrixPhotoTaker
 
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            
+           if (e.Key == Key.Enter)
+            {
+                if (SerialNumberBox.IsFocused == true)
+                {
+                    ChangeSerialNumber_Click(sender, e);
+                }
+                else if (ChangeDelayBox.IsFocused == true)
+                {
+                    ChangeDelayButton_Click(sender, e);
+                }
+            }
+        }
+
+        private void ChangeDelayButton_Click(object sender, RoutedEventArgs e)
+        {    
+
+            if (float.TryParse(ChangeDelayBox.Text, System.Globalization.NumberStyles.Currency, null, out _delay) == true)
+            {                
+                CurrentDelay.Text = ChangeDelayBox.Text;
+                ChangeDelayBox.Text = string.Empty;
+            }
+            else
+            {
+                MessageBox.Show("Некорректный ввод задержки");
+                ChangeDelayBox.Text = string.Empty;
+            }
         }
     }
 }

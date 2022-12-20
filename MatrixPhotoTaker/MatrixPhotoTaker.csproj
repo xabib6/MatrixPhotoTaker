@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PhotoTakerConsole\EDSDKLib\EDSDKLib.csproj" />
-    <ProjectReference Include="..\EDSDKLib\EDSDK.csproj" />
-    <ProjectReference Include="..\EDSDKLib\EDSDKLib.csproj" />
   </ItemGroup>
 
 </Project>

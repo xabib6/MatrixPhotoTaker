@@ -388,15 +388,6 @@
           }
         }
       },
-      "EDSDK/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/EDSDK.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/EDSDK.dll": {}
-        }
-      },
       "EDSDKLib/1.0.0": {
         "type": "project",
         "compile": {
@@ -1153,11 +1144,6 @@
         "system.runtime.extensions.nuspec"
       ]
     },
-    "EDSDK/1.0.0": {
-      "type": "project",
-      "path": "../EDSDKLib/EDSDK.csproj",
-      "msbuildProject": "../EDSDKLib/EDSDK.csproj"
-    },
     "EDSDKLib/1.0.0": {
       "type": "project",
       "path": "../../PhotoTakerConsole/EDSDKLib/EDSDKLib.csproj",
@@ -1167,7 +1153,6 @@
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
       "AntilatencyFactoryDatabaseAccessor >= 2.0.4",
-      "EDSDK >= 1.0.0",
       "EDSDKLib >= 1.0.0",
       "FluentFTP >= 42.1.0",
       "System.Drawing.Primitives >= 4.3.0"
@@ -1200,12 +1185,6 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDK.csproj": {
-              "projectPath": "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDK.csproj"
-            },
-            "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj": {
-              "projectPath": "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj"
-            },
             "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj": {
               "projectPath": "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj"
             }

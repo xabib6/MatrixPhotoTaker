@@ -20,6 +20,8 @@
         <StackPanel Grid.Column="1">
             <Button  Content="Подключиться к камере" Click="OpenSession_Click" Width="170" Height="50" Margin="0 20"/>
             <Button x:Name="TakePhoto" Content="Сделать фото" Width="100" Height="100" Click="TakePhoto_Click" VerticalAlignment ="Center" HorizontalAlignment="Center" Margin="0 20" IsEnabled="False"/>
+            <ProgressBar x:Name="TakingPhotoDelay" Height="20" Width="150" Maximum="50"/>
+            
             <TextBlock Text="Серийный номер матрицы"  HorizontalAlignment="Center"/>
             <TextBlock x:Name="SerialNumberText"/>
             <TextBox x:Name="SerialNumberBox"/>
@@ -51,6 +53,13 @@
             <ComboBox x:Name="ISOCoBox" Margin="0 5"  Width="100"  IsEnabled="False"/>
 
             <Button x:Name="SaveChanges" Content="Сохранить измененения" Click="SaveChanges_Click"/>
+
+            <TextBlock Text="Текущая задержка: " Margin="5"/>
+            <TextBlock x:Name="CurrentDelay" Margin="5 5"/>
+            <TextBox x:Name="ChangeDelayBox" />
+            <Button x:Name="ChangeDelayButton" Content="Изменить задержку" Click="ChangeDelayButton_Click" Margin="0 0 0 10"/>
+
+
         </StackPanel>
         
         
