@@ -28,6 +28,7 @@ namespace MatrixPhotoTaker
         private static float _delay;
         private static string _PCID;
         public static string[] DBConnectionData = { "postgres", "admin", "192.168.222.104" };
+        private static string TempPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\");
 
         public MainWindow()
         {
@@ -55,10 +56,10 @@ namespace MatrixPhotoTaker
                 MessageBox.Show("Камера не подключена");
                 return;
             }
-
-            if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\")))
+            
+            if (File.Exists(TempPhotoFolder))
             {
-                File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\"));
+                File.Delete(TempPhotoFolder);
             }
         }
 
@@ -149,7 +150,7 @@ namespace MatrixPhotoTaker
             SerialNumberText.Text = SerialNumberBox.Text;
             SerialNumber = SerialNumberBox.Text;
             DeleteTempPhoto();
-            _fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\") + SerialNumber + ".png";
+            _fileName = TempPhotoFolder + SerialNumber + ".png";
             SerialNumberBox.Text = string.Empty;
         }
 
@@ -221,7 +222,7 @@ namespace MatrixPhotoTaker
             MainCamera.SetCapacity(4096, int.MaxValue);
         }
 
-        private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Grid_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
