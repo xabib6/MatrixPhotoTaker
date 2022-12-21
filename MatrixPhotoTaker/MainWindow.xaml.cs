@@ -35,13 +35,21 @@ namespace MatrixPhotoTaker
             Start();
             DBConnect.Init();
             _delay = 5f;
+            CurrentDelay.Text = _delay.ToString();
+
             _PCID = PCID.GetId();
+            if (_PCID != null ) 
+            {
+                PCIDText.Text = _PCID;
+            }
+            
         }
 
         static void Start()
         {
             APIHandler = new CanonAPI();
             MainCamera = APIHandler.GetCameraList().FirstOrDefault();
+            
             if (MainCamera == null)
             {
                 MessageBox.Show("Камера не подключена");
@@ -225,6 +233,10 @@ namespace MatrixPhotoTaker
                 {
                     ChangeDelayButton_Click(sender, e);
                 }
+                else if(ChangePCIDBox.IsFocused == true)
+                {
+                    ChangePCIDButton_Click(sender, e);
+                }
             }
         }
 
@@ -245,9 +257,31 @@ namespace MatrixPhotoTaker
 
         private void GetLastMatrix_Click(object sender, RoutedEventArgs e)
         {
+            if (_PCID == null)
+            {
+                MessageBox.Show("Для этого компьютера не введён ID");
+                return;
+            }
             DBConnect.Init();
-            SerialNumberBox.Text = DBConnect.GetLast(_PCID);
+            string lastMatrix = DBConnect.GetLast(_PCID);
+            if (lastMatrix == null)
+            {
+                MessageBox.Show("На этом компьютере нет отсмотренных матриц");
+                return;
+            }
+            SerialNumberBox.Text = lastMatrix;
             ChangeSerialNumber_Click(sender, e);
+        }
+
+        private void ChangePCIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChangePCIDBox.Text != string.Empty)
+            {
+                PCID.WriteInRegister(ChangePCIDBox.Text);
+                _PCID = ChangePCIDBox.Text;
+                ChangePCIDBox.Text = string.Empty;
+                PCIDText.Text = _PCID;
+            }
         }
     }
 }

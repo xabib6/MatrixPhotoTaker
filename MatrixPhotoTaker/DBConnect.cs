@@ -2,10 +2,8 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 
 namespace MatrixPhotoTaker
 {
@@ -49,12 +47,14 @@ namespace MatrixPhotoTaker
 
                 else
                 {
-                    MessageBox.Show("Для данного пк не найдено отчёта");
                     return null;
                 }
 
             }
-
+            if (lastReport == null)
+            {
+                return null;
+            }
 
             var matrix = databaseAccessTool.Devices.First(d => d.Id == lastReport.ReportedDevice).SerialNumber;
 

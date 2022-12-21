@@ -32,6 +32,7 @@ namespace MatrixPhotoTaker
             if (result == null)
             {
                 MessageBox.Show("Не удалось подключиться к серверу.");
+                _connection = null;
                 return null;
             }
             int photoNumber = 1;
@@ -54,8 +55,9 @@ namespace MatrixPhotoTaker
             catch(System.Exception e)
             {
                 MessageBox.Show(e.InnerException.Message);
-                
+                _connection = null;
             }
+
             if (res == FtpStatus.Failed)
             {
                 MessageBox.Show("Не удалось");
@@ -68,7 +70,6 @@ namespace MatrixPhotoTaker
             }
             SerialNumber += $"-{photoNumber}.png";
             _connection = null;
-            MessageBox.Show(SerialNumber);
             return SerialNumber;
 
         }
