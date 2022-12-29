@@ -12,9 +12,6 @@ using EOSDigital.SDK;
 
 namespace MatrixPhotoTaker
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
 
@@ -26,7 +23,7 @@ namespace MatrixPhotoTaker
         private static bool _isSessionOpen;
         private static ImageBrush imageBrush;
         private static float _delay;
-        private static string _PCID;
+        private static string _MachineID;
         public static string[] DBConnectionData = { "postgres", "admin", "192.168.222.104" };
         private static string TempPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\");
 
@@ -38,10 +35,10 @@ namespace MatrixPhotoTaker
             _delay = 5f;
             CurrentDelay.Text = _delay.ToString();
 
-            _PCID = PCID.GetId();
-            if (_PCID != null ) 
+            _MachineID = MachineID.GetId();
+            if (_MachineID != null ) 
             {
-                PCIDText.Text = _PCID;
+                MachineIDText.Text = _MachineID;
             }
             
         }
@@ -53,7 +50,7 @@ namespace MatrixPhotoTaker
             
             if (MainCamera == null)
             {
-                MessageBox.Show("Камера не подключена");
+                MessageBox.Show("Camera doesn't connected");
                 return;
             }
             
@@ -71,7 +68,7 @@ namespace MatrixPhotoTaker
             }
             if (MainCamera == null)
             {
-                MessageBox.Show("Камера не подключена");
+                MessageBox.Show("Camera doesn't connected");
                 return;
             }
             imageBrush = MatrixImage;
@@ -129,14 +126,14 @@ namespace MatrixPhotoTaker
             SendPhoto.IsEnabled = false;
             if (SerialNumberBox.Text == string.Empty)
             {
-                MessageBox.Show("Серийный номер не может быть пустым");
+                MessageBox.Show("Serial number can't be empty");
                 return;
             }
 
             DBConnect dbConnection = new DBConnect(DBConnectionData[0], DBConnectionData[1], DBConnectionData[2]);
             if (dbConnection.SerialNumberExsist(SerialNumberBox.Text) == false)
             {
-                MessageBox.Show("Матрица с таким серийным номером не существует");
+                MessageBox.Show("This matrix doesn't exist");
                 SerialNumberBox.Text = string.Empty;
                 return;
             }
@@ -234,9 +231,9 @@ namespace MatrixPhotoTaker
                 {
                     ChangeDelayButton_Click(sender, e);
                 }
-                else if(ChangePCIDBox.IsFocused == true)
+                else if(MachineIDBox.IsFocused == true)
                 {
-                    ChangePCIDButton_Click(sender, e);
+                    ChangeMachineIDButton_Click(sender, e);
                 }
             }
         }
@@ -251,37 +248,37 @@ namespace MatrixPhotoTaker
             }
             else
             {
-                MessageBox.Show("Некорректный ввод задержки");
+                MessageBox.Show("Uncorrect delay input");
                 ChangeDelayBox.Text = string.Empty;
             }
         }
 
         private void GetLastMatrix_Click(object sender, RoutedEventArgs e)
         {
-            if (_PCID == null)
+            if (_MachineID == null)
             {
-                MessageBox.Show("Для этого компьютера не введён ID");
+                MessageBox.Show("No ID for this PC");
                 return;
             }
             DBConnect.Init();
-            string lastMatrix = DBConnect.GetLast(_PCID);
+            string lastMatrix = DBConnect.GetLast(_MachineID);
             if (lastMatrix == null)
             {
-                MessageBox.Show("На этом компьютере нет отсмотренных матриц");
+                MessageBox.Show("There is no reviwed matrix on this PC");
                 return;
             }
             SerialNumberBox.Text = lastMatrix;
             ChangeSerialNumber_Click(sender, e);
         }
 
-        private void ChangePCIDButton_Click(object sender, RoutedEventArgs e)
+        private void ChangeMachineIDButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ChangePCIDBox.Text != string.Empty)
+            if (MachineIDBox.Text != string.Empty)
             {
-                PCID.WriteInRegister(ChangePCIDBox.Text);
-                _PCID = ChangePCIDBox.Text;
-                ChangePCIDBox.Text = string.Empty;
-                PCIDText.Text = _PCID;
+                MachineID.WriteInRegister(MachineIDBox.Text);
+                _MachineID = MachineIDText.Text;
+                MachineIDBox.Text = string.Empty;
+                MachineIDText.Text = _MachineID;
             }
         }
     }

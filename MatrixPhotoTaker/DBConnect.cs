@@ -26,7 +26,7 @@ namespace MatrixPhotoTaker
             DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(MainWindow.DBConnectionData[0], MainWindow.DBConnectionData[1], MainWindow.DBConnectionData[2]);
             MatrixList = databaseAccessTool.Devices.Where(d => d.DeviceType == (int)DeviceTypeNames.MatrixM240HW01_1_8).ToList();
         }
-        public static string GetLast(string PCID)
+        public static string GetLast(string MachineID)
         {
             DatabaseAccessTool databaseAccessTool = new DatabaseAccessTool(MainWindow.DBConnectionData[0], MainWindow.DBConnectionData[1], MainWindow.DBConnectionData[2]);
             var reports = databaseAccessTool.DatabaseReports.Where(d => d.Name == "matrixOnly").ToList();
@@ -35,10 +35,10 @@ namespace MatrixPhotoTaker
             foreach (var report in reports)
             {
                 var data = JObject.Parse(report.ReportData);
-                if (data["PCID"] != null)
+                if (data["MachineID"] != null)
                 {
-                    var pcid = data["PCID"].ToString();
-                    if (pcid == PCID)
+                    var machineID = data["MachineID"].ToString();
+                    if (machineID == MachineID)
                     {
                         lastReport = report;
                         break;

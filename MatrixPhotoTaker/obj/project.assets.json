@@ -4088,8 +4088,8 @@
     },
     "EDSDKLib/1.0.0": {
       "type": "project",
-      "path": "../../PhotoTakerConsole/EDSDKLib/EDSDKLib.csproj",
-      "msbuildProject": "../../PhotoTakerConsole/EDSDKLib/EDSDKLib.csproj"
+      "path": "../EDSDKLib/EDSDKLib.csproj",
+      "msbuildProject": "../EDSDKLib/EDSDKLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4128,8 +4128,8 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj": {
-              "projectPath": "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj"
+            "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj": {
+              "projectPath": "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj"
             }
           }
         }

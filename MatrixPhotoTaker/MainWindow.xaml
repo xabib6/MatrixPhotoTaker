@@ -19,18 +19,18 @@
         </Grid>
 
         <StackPanel Grid.Column="1">
-            <Button  Content="Подключиться к камере" Click="OpenSession_Click" Width="170" Height="50" Margin="0 10"/>
-            <Button x:Name="TakePhoto" Content="Сделать фото"   Width="100" Height="40" Click="TakePhoto_Click" HorizontalAlignment="Center"   Margin="0 5"  IsEnabled="False"/>
-            <Button x:Name="SendPhoto" Content="Отправить фото" Width="100" Height="40"  Click="SendPhoto_Click" HorizontalAlignment="Center"  Margin="0 5"  IsEnabled="False"/>
+            <Button  Content="Connect to camera" Click="OpenSession_Click" Width="170" Height="50" Margin="0 10"/>
+            <Button x:Name="TakePhoto" Content="Take photo"   Width="100" Height="40" Click="TakePhoto_Click" HorizontalAlignment="Center"   Margin="0 5"  IsEnabled="False"/>
+            <Button x:Name="SendPhoto" Content="Send photo" Width="100" Height="40"  Click="SendPhoto_Click" HorizontalAlignment="Center"  Margin="0 5"  IsEnabled="False"/>
             <ProgressBar x:Name="TakingPhotoDelay" Height="20"  Maximum="50"/>
 
-            <Button x:Name="GetLastMatrix" Content="Получить последнюю" Click="GetLastMatrix_Click" Margin="0 5"/>
-            <TextBlock Text="Серийный номер матрицы:"  HorizontalAlignment="Center"/>
+            <Button x:Name="GetLastMatrix" Content="Get last matrix" Click="GetLastMatrix_Click" Margin="0 5"/>
+            <TextBlock Text="Serial number:"  HorizontalAlignment="Center"/>
             <TextBlock x:Name="SerialNumberText"/>
             <TextBox x:Name="SerialNumberBox"/>
-            <Button x:Name="ChangeSerialNumber" Content="Ввести" HorizontalAlignment="Center" Click="ChangeSerialNumber_Click"/>
+            <Button x:Name="ChangeSerialNumber" Content="Enter" HorizontalAlignment="Center" Click="ChangeSerialNumber_Click"/>
             
-            <TextBlock Text="Настройки" Margin="10 80 0 0"/>
+            <TextBlock Text="Settings" Margin="10 80 0 0"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -48,23 +48,23 @@
                 </StackPanel>
             </Grid>
 
-            <Button     x:Name="ChangeSettings" Content="Изменить настройки"  Click="ChangeSettings_Click"/>
+            <Button     x:Name="ChangeSettings" Content="Change settings"  Click="ChangeSettings_Click"/>
 
             <ComboBox   x:Name="AvCoBox"  Margin="0 3"  Width="120" Height = "20" IsEnabled="False"/>
             <ComboBox   x:Name="TvCoBox"  Margin="0 3"  Width="120" Height = "20" IsEnabled="False"/>
             <ComboBox   x:Name="ISOCoBox" Margin="0 3"  Width="120" Height = "20" IsEnabled="False"/>
 
-            <Button     x:Name="SaveChanges" Content="Сохранить измененения" Click="SaveChanges_Click"/>
+            <Button     x:Name="SaveChanges" Content="Save changes" Click="SaveChanges_Click"/>
 
-            <TextBlock Text="Текущая задержка: "    Margin="3"/>
+            <TextBlock Text="Current delay: "    Margin="3"/>
             <TextBlock  x:Name="CurrentDelay"       Margin="3"/>
             <TextBox    x:Name="ChangeDelayBox"     Margin="3"/>
-            <Button     x:Name="ChangeDelayButton"  Content="Изменить задержку" Click="ChangeDelayButton_Click" />
+            <Button     x:Name="ChangeDelayButton"  Content="Change delay" Click="ChangeDelayButton_Click" />
 
-            <TextBlock Text="PCID: "                Margin="6"/>
-            <TextBlock  x:Name="PCIDText"           Margin="3"/>
-            <TextBox    x:Name="ChangePCIDBox"      Margin="3"/>
-            <Button     x:Name="ChangePCIDButton"   Content="Изменить ID" Click="ChangePCIDButton_Click" />
+            <TextBlock Text="MachineID: "                Margin="6"/>
+            <TextBlock  x:Name="MachineIDText"           Margin="3"/>
+            <TextBox    x:Name="MachineIDBox"      Margin="3"/>
+            <Button     x:Name="ChangeIDButton"   Content="Change ID" Click="ChangeMachineIDButton_Click" />
 
         </StackPanel>
 

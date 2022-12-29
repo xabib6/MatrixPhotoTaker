@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
 
-public static class PCID
+public static class MachineID
 {
     static string[] Hierarchy = { "Software","Antilatency", "Factory", "MachineId", "ID" };
     public static string GetId()

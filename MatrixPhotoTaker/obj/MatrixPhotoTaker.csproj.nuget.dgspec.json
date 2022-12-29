@@ -4,6 +4,21 @@
     "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\MatrixPhotoTaker\\MatrixPhotoTaker.csproj": {}
   },
   "projects": {
+    "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj",
+        "projectName": "EDSDKLib",
+        "projectPath": "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj",
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    },
     "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\MatrixPhotoTaker\\MatrixPhotoTaker.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -28,8 +43,8 @@
           "net6.0-windows7.0": {
             "targetAlias": "net6.0-windows",
             "projectReferences": {
-              "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj": {
-                "projectPath": "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj"
+              "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj": {
+                "projectPath": "C:\\Users\\habib.temure\\source\\repos\\MatrixPhotoTaker\\EDSDKLib\\EDSDKLib.csproj"
               }
             }
           }
@@ -82,21 +97,6 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
-      }
-    },
-    "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj",
-        "projectName": "EDSDKLib",
-        "projectPath": "C:\\Users\\habib.temure\\source\\repos\\PhotoTakerConsole\\EDSDKLib\\EDSDKLib.csproj",
-        "frameworks": {
-          "net48": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net48": {}
       }
     }
   }

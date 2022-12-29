@@ -22,7 +22,7 @@ namespace MatrixPhotoTaker
         {
             if (_connection != null)
             {
-                MessageBox.Show("Попытка подключения уже создана");
+                MessageBox.Show("Connection attempt has already done. Wait");
                 return null;
             }
             _connection = this;
@@ -31,7 +31,7 @@ namespace MatrixPhotoTaker
             var result = client.AutoConnect();
             if (result == null)
             {
-                MessageBox.Show("Не удалось подключиться к серверу.");
+                MessageBox.Show("Failed to connect to server.");
                 _connection = null;
                 return null;
             }
@@ -60,13 +60,13 @@ namespace MatrixPhotoTaker
 
             if (res == FtpStatus.Failed)
             {
-                MessageBox.Show("Не удалось");
+                MessageBox.Show("Failed");
                 _connection = null;
                 return null;
             }
             else if (res == FtpStatus.Success)
             {
-                MessageBox.Show("Фото отправлено");
+                MessageBox.Show("Photo sent");
             }
             SerialNumber += $"-{photoNumber}.png";
             _connection = null;
