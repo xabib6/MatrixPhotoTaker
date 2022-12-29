@@ -48,6 +48,7 @@ namespace MatrixPhotoTaker
             }
             else
             {
+                MessageBox.Show(_MachineID);
                 ConnectToCameraButton.IsEnabled = true;
                 GetLastMatrix.IsEnabled= true;
             }

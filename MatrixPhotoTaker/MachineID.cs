@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using System;
+using System.Text;
 using System.Windows;
 
 public static class MachineID
@@ -15,15 +17,21 @@ public static class MachineID
         }
 
         var values = key.GetValueNames();
+        var sb = new StringBuilder();
 
         foreach (var value in values)
         {
             if (value.StartsWith(Key))
             {
-                return key.GetValue(value)?.ToString();
+                var data = key.GetValue(value) as byte[];
+                foreach (var dat in data)
+                {
+                    sb.Append(Convert.ToChar(dat));
+                }
+                sb.Remove(sb.Length - 1, 1);
             }
         }
-        return null;
+        return sb.ToString();
     }    
     
 }
