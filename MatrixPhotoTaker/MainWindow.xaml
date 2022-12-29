@@ -19,18 +19,18 @@
         </Grid>
 
         <StackPanel Grid.Column="1">
-            <Button  Content="Connect to camera" Click="OpenSession_Click" Width="170" Height="50" Margin="0 10"/>
+            <Button x:Name="ConnectToCameraButton" Content="Connect to camera" Click="OpenSession_Click" Width="160" Height="50" Margin="0 10" IsEnabled="False"/>
             <Button x:Name="TakePhoto" Content="Take photo"   Width="100" Height="40" Click="TakePhoto_Click" HorizontalAlignment="Center"   Margin="0 5"  IsEnabled="False"/>
             <Button x:Name="SendPhoto" Content="Send photo" Width="100" Height="40"  Click="SendPhoto_Click" HorizontalAlignment="Center"  Margin="0 5"  IsEnabled="False"/>
             <ProgressBar x:Name="TakingPhotoDelay" Height="20"  Maximum="50"/>
 
-            <Button x:Name="GetLastMatrix" Content="Get last matrix" Click="GetLastMatrix_Click" Margin="0 5"/>
+            <Button x:Name="GetLastMatrix" Content="Get last matrix" Click="GetLastMatrix_Click" Margin="0 5" IsEnabled="False"/>
             <TextBlock Text="Serial number:"  HorizontalAlignment="Center"/>
             <TextBlock x:Name="SerialNumberText"/>
             <TextBox x:Name="SerialNumberBox"/>
             <Button x:Name="ChangeSerialNumber" Content="Enter" HorizontalAlignment="Center" Click="ChangeSerialNumber_Click"/>
             
-            <TextBlock Text="Settings" Margin="10 80 0 0"/>
+            <TextBlock Text="Settings" Margin="10 130 0 0"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -61,10 +61,8 @@
             <TextBox    x:Name="ChangeDelayBox"     Margin="3"/>
             <Button     x:Name="ChangeDelayButton"  Content="Change delay" Click="ChangeDelayButton_Click" />
 
-            <TextBlock Text="MachineID: "                Margin="6"/>
-            <TextBlock  x:Name="MachineIDText"           Margin="3"/>
-            <TextBox    x:Name="MachineIDBox"      Margin="3"/>
-            <Button     x:Name="ChangeIDButton"   Content="Change ID" Click="ChangeMachineIDButton_Click" />
+            <Button x:Name="RefreshMachineID" Content="Refresh machine ID" Click="RefreshMachineID_Click" IsEnabled="False"/>
+
 
         </StackPanel>
 

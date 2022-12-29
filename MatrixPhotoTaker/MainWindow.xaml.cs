@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -19,49 +20,49 @@ namespace MatrixPhotoTaker
         private static CanonAPI APIHandler;
         private static Camera MainCamera;
         private static string SerialNumber;
+
         private static string _fileName;
         private static bool _isSessionOpen;
-        private static ImageBrush imageBrush;
-        private static float _delay;
-        private static string _MachineID;
-        public static string[] DBConnectionData = { "postgres", "admin", "192.168.222.104" };
+        private static float _delay = 5f;
+        private string _MachineID;
+        private DBConnect _dbConnection;
         private static string TempPhotoFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto\\");
 
         public MainWindow()
         {
             InitializeComponent();
-            Start();
-            DBConnect.Init();
-            _delay = 5f;
+
+
+
             CurrentDelay.Text = _delay.ToString();
 
-            _MachineID = MachineID.GetId();
-            if (_MachineID != null ) 
-            {
-                MachineIDText.Text = _MachineID;
-            }
-            
-        }
+            _dbConnection = new DBConnect("tester", "user", "192.168.222.58");
+            _dbConnection.Init();
 
-        static void Start()
-        {
-            APIHandler = new CanonAPI();
-            MainCamera = APIHandler.GetCameraList().FirstOrDefault();
+            _MachineID = MachineID.GetId();
             
-            if (MainCamera == null)
+            if (_MachineID == null)
             {
-                MessageBox.Show("Camera doesn't connected");
-                return;
+                MessageBox.Show("Set ID in MatrixTest program");
+                RefreshMachineID.IsEnabled = true;
             }
-            
+            else
+            {
+                ConnectToCameraButton.IsEnabled = true;
+                GetLastMatrix.IsEnabled= true;
+            }
+
             if (File.Exists(TempPhotoFolder))
             {
                 File.Delete(TempPhotoFolder);
             }
         }
 
+        
+
         private void OpenSession_Click(object sender, RoutedEventArgs e)
         {
+            APIHandler = new CanonAPI();
             if (MainCamera == null)
             {
                 MainCamera = APIHandler.GetCameraList().FirstOrDefault();
@@ -71,7 +72,7 @@ namespace MatrixPhotoTaker
                 MessageBox.Show("Camera doesn't connected");
                 return;
             }
-            imageBrush = MatrixImage;
+           
             if (SerialNumber != null)
             {
                 TakePhoto.IsEnabled = true;
@@ -101,22 +102,22 @@ namespace MatrixPhotoTaker
             AvSettings.Text = AvCoBox.SelectedItem.ToString();
             TvSettings.Text = TvCoBox.SelectedItem.ToString();
             ISOSettings.Text = ISOCoBox.SelectedItem.ToString();
+            ConnectToCameraButton.IsEnabled= false;
         }
 
 
         private async void TakePhoto_Click(object sender, RoutedEventArgs e)
         {
-
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < TakingPhotoDelay.Maximum; i++)
             {
                 TakingPhotoDelay.Value++;
-                await Task.Delay((int)(_delay * 18));
+                await Task.Delay((int)(_delay/TakingPhotoDelay.Maximum*1000));
             }
 
             MainCamera.TakePhotoAsync();
             TakingPhotoDelay.Value = 0;
             SendPhoto.IsEnabled = true;
-            imageBrush.ImageSource = null;
+            MatrixImage.ImageSource = null;
             Thread.Sleep(2000);
             ChangePreviewPhoto();
         }
@@ -130,8 +131,7 @@ namespace MatrixPhotoTaker
                 return;
             }
 
-            DBConnect dbConnection = new DBConnect(DBConnectionData[0], DBConnectionData[1], DBConnectionData[2]);
-            if (dbConnection.SerialNumberExsist(SerialNumberBox.Text) == false)
+            if (_dbConnection.SerialNumberExsist(SerialNumberBox.Text) == false)
             {
                 MessageBox.Show("This matrix doesn't exist");
                 SerialNumberBox.Text = string.Empty;
@@ -155,8 +155,7 @@ namespace MatrixPhotoTaker
         {
             ServerConnection connection = new ServerConnection("192.168.222.250", "admin", "admin", 22);
             string FilePathOnServer = connection.SendImageToServer(_fileName, SerialNumber);
-            DBConnect dbConnection = new DBConnect(DBConnectionData[0], DBConnectionData[1], DBConnectionData[2]);
-            dbConnection.AddReport(FilePathOnServer, SerialNumber);
+            _dbConnection.AddReport(FilePathOnServer, SerialNumber);
             SendPhoto.IsEnabled = false;
         }
 
@@ -230,11 +229,7 @@ namespace MatrixPhotoTaker
                 else if (ChangeDelayBox.IsFocused == true)
                 {
                     ChangeDelayButton_Click(sender, e);
-                }
-                else if(MachineIDBox.IsFocused == true)
-                {
-                    ChangeMachineIDButton_Click(sender, e);
-                }
+                }                
             }
         }
 
@@ -260,25 +255,29 @@ namespace MatrixPhotoTaker
                 MessageBox.Show("No ID for this PC");
                 return;
             }
-            DBConnect.Init();
-            string lastMatrix = DBConnect.GetLast(_MachineID);
+            _dbConnection.Init();
+            string lastMatrix = _dbConnection.GetLast(_MachineID);
             if (lastMatrix == null)
             {
-                MessageBox.Show("There is no reviwed matrix on this PC");
+                MessageBox.Show("There is no reviewed matrix on this PC");
                 return;
             }
             SerialNumberBox.Text = lastMatrix;
             ChangeSerialNumber_Click(sender, e);
         }
 
-        private void ChangeMachineIDButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshMachineID_Click(object sender, RoutedEventArgs e)
         {
-            if (MachineIDBox.Text != string.Empty)
+            _MachineID = MachineID.GetId();
+            if (_MachineID != null)
             {
-                MachineID.WriteInRegister(MachineIDBox.Text);
-                _MachineID = MachineIDText.Text;
-                MachineIDBox.Text = string.Empty;
-                MachineIDText.Text = _MachineID;
+                RefreshMachineID.IsEnabled = false;
+                ConnectToCameraButton.IsEnabled = true;
+                GetLastMatrix.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No ID set for this PC");
             }
         }
     }

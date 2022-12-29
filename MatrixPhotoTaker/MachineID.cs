@@ -3,35 +3,27 @@ using System.Windows;
 
 public static class MachineID
 {
-    static string[] Hierarchy = { "Software","Antilatency", "Factory", "MachineId", "ID" };
-    public static string GetId()
+    static string[] Hierarchy = { "SOFTWARE", "Antilatency", "Factory"};
+    static string Key = "MachineID";
+    public static string? GetId()
     {
         RegistryKey key = Registry.CurrentUser;
-        for (int i = 0; i < Hierarchy.Length-1; i++)
+
+        foreach (var path in Hierarchy)
         {
-            key = key.CreateSubKey(Hierarchy[i]);
+            key = key.CreateSubKey(path);
         }
 
-        string s = null;        
-        if (key != null)
+        var values = key.GetValueNames();
+
+        foreach (var value in values)
         {
-            s = key.GetValue(Hierarchy[Hierarchy.Length-1])?.ToString();
-            key.Close();            
+            if (value.StartsWith(Key))
+            {
+                return key.GetValue(value)?.ToString();
+            }
         }
-        return s;
-    }
-
-    public static void WriteInRegister(string PCID)
-    {
-
-        RegistryKey key = Registry.CurrentUser;
-        for (int i = 0; i < Hierarchy.Length - 1; i++)
-        {
-            key = key.CreateSubKey(Hierarchy[i]);
-        }
-
-        key.SetValue(Hierarchy[Hierarchy.Length-1], PCID);
-        key.Close();
-    }
+        return null;
+    }    
     
 }

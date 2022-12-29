@@ -8,31 +8,23 @@ namespace MatrixPhotoTaker
         private string _IP;
         private string _username;
         private string _password;
-        private int _Port;
-        private static ServerConnection _connection;
-        public ServerConnection(string IP, string username, string password, int Port)
+        private int _port;
+        public ServerConnection(string IP, string username, string password, int port)
         {
             _IP = IP;
             _username = username;
             _password = password;
-            _Port = Port;
+            _port = port;
         }
 
-        public string SendImageToServer(string FilePath, string SerialNumber)
-        {
-            if (_connection != null)
-            {
-                MessageBox.Show("Connection attempt has already done. Wait");
-                return null;
-            }
-            _connection = this;
+        public string? SendImageToServer(string FileName, string SerialNumber)
+        {     
             byte[] imageBytes = new byte[0];
-            var client = new FtpClient(_IP, new System.Net.NetworkCredential(_username, _password), _Port);
+            var client = new FtpClient(_IP, new System.Net.NetworkCredential(_username, _password), _port);
             var result = client.AutoConnect();
             if (result == null)
             {
                 MessageBox.Show("Failed to connect to server.");
-                _connection = null;
                 return null;
             }
             int photoNumber = 1;
@@ -50,18 +42,16 @@ namespace MatrixPhotoTaker
             FtpStatus res = FtpStatus.Skipped;
             try
             {
-                res = client.UploadFile(FilePath, $"/{SerialNumber}"+$"-{photoNumber}.png");
+                res = client.UploadFile(FileName, $"/{SerialNumber}"+$"-{photoNumber}.png");
             }
             catch(System.Exception e)
             {
                 MessageBox.Show(e.InnerException.Message);
-                _connection = null;
             }
 
             if (res == FtpStatus.Failed)
             {
                 MessageBox.Show("Failed");
-                _connection = null;
                 return null;
             }
             else if (res == FtpStatus.Success)
@@ -69,7 +59,6 @@ namespace MatrixPhotoTaker
                 MessageBox.Show("Photo sent");
             }
             SerialNumber += $"-{photoNumber}.png";
-            _connection = null;
             return SerialNumber;
 
         }
