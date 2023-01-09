@@ -17,17 +17,17 @@ namespace MatrixPhotoTaker
             _port = port;
         }
 
-        public string? SendImageToServer(string FileName, string SerialNumber)
+        public string? SendFile(string FileName, string SerialNumber, out string Result, string fileFormat = ".png")
         {     
             byte[] imageBytes = new byte[0];
             var client = new FtpClient(_IP, new System.Net.NetworkCredential(_username, _password), _port);
             var result = client.AutoConnect();
             if (result == null)
             {
-                MessageBox.Show("Failed to connect to server.");
+                Result = "Failed to connect to server.";
                 return null;
             }
-            int photoNumber = 1;
+            int fileNumber = 1;
             foreach (FtpListItem item in client.GetListing("/"))
             {
                 if (item.Type == FtpObjectType.File)
@@ -35,30 +35,29 @@ namespace MatrixPhotoTaker
                     var OnlySerial = item.Name.Substring(0, item.Name.LastIndexOf('-'));
                     if (SerialNumber == OnlySerial) 
                     {
-                        photoNumber++;
+                        fileNumber++;
                     }
                 }
             }
             FtpStatus res = FtpStatus.Skipped;
             try
             {
-                res = client.UploadFile(FileName, $"/{SerialNumber}"+$"-{photoNumber}.png");
+                res = client.UploadFile(FileName, $"/{SerialNumber}"+$"-{fileNumber}{fileFormat}");
             }
             catch(System.Exception e)
             {
-                MessageBox.Show(e.InnerException.Message);
+                Result =  e.InnerException?.Message;
+                return null;
             }
 
             if (res == FtpStatus.Failed)
             {
-                MessageBox.Show("Failed");
+                Result = "Failed to upload file";
                 return null;
             }
-            else if (res == FtpStatus.Success)
-            {
-                MessageBox.Show("Photo sent");
-            }
-            SerialNumber += $"-{photoNumber}.png";
+            
+            SerialNumber += $"-{fileNumber}{fileFormat}";
+            Result = "Success";
             return SerialNumber;
 
         }

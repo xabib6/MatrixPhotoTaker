@@ -10,7 +10,7 @@ namespace MatrixPhotoTaker
     {
         private List<Device> MatrixList;
 
-        private int _deviceType = (int)DeviceTypeNames.MatrixM240HW01_1_8;
+        private DeviceTypeNames _deviceType = DeviceTypeNames.MatrixM240HW01_1_8;
 
         private DatabaseAccessTool _databaseAccessTool;
         public DBConnect(string username, string password, string IP)
@@ -24,7 +24,7 @@ namespace MatrixPhotoTaker
             {
                 return;
             }
-            MatrixList = _databaseAccessTool.Devices.Where(d => d.DeviceType == _deviceType).ToList();
+            MatrixList = _databaseAccessTool.Devices.Where(d => d.DeviceType == Convert.ToInt32(_deviceType)).ToList();
         }
         public string? GetLast(string MachineID)
         {            
@@ -73,7 +73,7 @@ namespace MatrixPhotoTaker
             data["url"] = FilePath;
             try
             {
-                _databaseAccessTool.SendReport(serialNumber, DeviceTypeNames.MatrixM240HW01_1_8, ReportTypes.Test, data.ToString(), "photo");
+                _databaseAccessTool.SendReport(serialNumber, _deviceType, ReportTypes.Test, data.ToString(), "photo");
                 _databaseAccessTool.SaveChanges();
             }
             catch(Exception ex)

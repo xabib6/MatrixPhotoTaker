@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -14,7 +13,7 @@ namespace MatrixPhotoTaker
 {
     public partial class MainWindow : Window
     {
-
+        private const string FileFormat = ".png";
         private static ManualResetEvent WaitEvent = new ManualResetEvent(false);
         private static CanonAPI APIHandler;
         private static Camera MainCamera;
@@ -35,7 +34,7 @@ namespace MatrixPhotoTaker
 
             CurrentDelay.Text = _delay.ToString();
 
-            _dbConnection = new DBConnect("tester", "user", "192.168.222.58");
+            _dbConnection = new DBConnect("postgres", "admin", "192.168.222.104");
             _dbConnection.Init();
 
             _MachineID = MachineID.GetId();
@@ -147,14 +146,20 @@ namespace MatrixPhotoTaker
             SerialNumberText.Text = SerialNumberBox.Text;
             SerialNumber = SerialNumberBox.Text;
             DeleteTempPhoto();
-            _fileName = TempPhotoFolder + SerialNumber + ".png";
+            _fileName = TempPhotoFolder + SerialNumber + FileFormat;
             SerialNumberBox.Text = string.Empty;
         }
 
         private void SendPhoto_Click(object sender, RoutedEventArgs e)
         {
             ServerConnection connection = new ServerConnection("192.168.222.250", "admin", "admin", 22);
-            string FilePathOnServer = connection.SendImageToServer(_fileName, SerialNumber);
+            string result;
+            string? FilePathOnServer = connection.SendFile(_fileName, SerialNumber, out result);
+            MessageBox.Show(result);
+            if (FilePathOnServer == null)
+            {
+                return;
+            }
             _dbConnection.AddReport(FilePathOnServer, SerialNumber);
             SendPhoto.IsEnabled = false;
         }
@@ -212,7 +217,7 @@ namespace MatrixPhotoTaker
         private static void MainCamera_DownloadReady(Camera sender, DownloadInfo Info)
         {
             DeleteTempPhoto();
-            Info.FileName = SerialNumber + ".png";
+            Info.FileName = SerialNumber + FileFormat;
             var ImageSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RemotePhoto");
             sender.DownloadFile(Info, ImageSaveDirectory);
             MainCamera.SetCapacity(4096, int.MaxValue);
